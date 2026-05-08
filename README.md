@@ -1,5 +1,5 @@
 # NILM - Non-Intrusive Load Monitoring
-### 📁 **File 1: README.md**
+### 📁 **README.md**
 # NILM - Non-Intrusive Load Monitoring
 
 Non-Intrusive Load Monitoring (NILM) system using LSTM neural networks to extract appliance power consumption from whole-house mains readings.
@@ -39,23 +39,6 @@ This system disaggregates individual appliance power (Refrigerator and Air Condi
 | Refrigerator | 0.89 | 0.85 | 0.87 |
 | Air Conditioner | 0.92 | 0.88 | 0.90 |
 
-## Usage
-
-```python
-# Load fridge model
-from tensorflow.keras.models import load_model
-import joblib
-
-model = load_model("fridge_nilm_lstm.keras")
-mains_scaler = joblib.load("mains_scaler.pkl")
-fridge_scaler = joblib.load("fridge_scaler.pkl")
-
-# Predict from 60 mains readings
-mains_window = [[1200], [1250], [1300], ...]  # 60 values
-mains_scaled = mains_scaler.transform(mains_window)
-prediction = model.predict(mains_scaled.reshape(1, 60, 1))
-fridge_watts = fridge_scaler.inverse_transform(prediction)
-```
 
 ## Requirements
 
@@ -64,117 +47,10 @@ fridge_watts = fridge_scaler.inverse_transform(prediction)
 - NILMTK
 - Pandas, NumPy, Scikit-learn
 
-## License
-
-MIT
-```
-
----
-
-### 📁 **File 2: requirements.txt**
-```txt
-numpy==1.23.5
-pandas==1.5.3
-tensorflow==2.13.0
-scikit-learn==1.3.0
-matplotlib==3.7.2
-nilmtk==0.4.1
-joblib==1.3.2
-scipy==1.11.2
-seaborn==0.12.2
-```
-
 ---
 
 
----
-
-### 📁 **File 4: LICENSE**
-```txt
-MIT License
-
-Copyright (c) 2026 NILM Project
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-
-### 📁 **File 5: docs/DATA_PREPARATION.md**
-```markdown
-# Data Preparation Guide
-
-## Source Dataset
-IAWE (Individual Apartments in Washington and Europe) dataset from NILMTK
-
-## Step 1: Extract Raw Data
-
-```python
-from nilmtk import DataSet
-import pandas as pd
-
-# Load dataset
-dataset = DataSet('iawe.h5')
-building = dataset.buildings[1]
-
-# Extract mains
-mains = building.elec.mains()
-mains_power = pd.concat(mains.power_series(sample_period=60))
-mains_power.to_csv("iawe_mains_raw.csv")
-
-# Extract fridge
-fridge = building.elec['air conditioner']
-fridge_power = pd.concat(fridge.power_series(sample_period=60))
-fridge_power.to_csv("iawe_fridge_raw.csv")
-```
-
-## Step 2: Clean and Align Data
-
-```python
-# Load and clean
-mains = pd.read_csv("iawe_mains_raw.csv", index_col=0, parse_dates=True)
-fridge = pd.read_csv("iawe_fridge_raw.csv", index_col=0, parse_dates=True)
-
-# Remove bad rows
-mains = mains[mains.index.notna()]
-fridge = fridge[fridge.index.notna()]
-
-# Convert to numeric
-mains["power"] = pd.to_numeric(mains["power"], errors="coerce")
-fridge["power"] = pd.to_numeric(fridge["power"], errors="coerce")
-
-# Align timestamps
-data = mains.join(fridge, how="inner", lsuffix="_mains", rsuffix="_fridge")
-```
-
-## Step 3: Data Statistics
-
-- Sampling rate: 60 seconds (1 minute)
-- Typical fridge power: 0-200 Watts (ON state ~50-150W)
-- Typical AC power: 0-3000 Watts (ON state ~800-2500W)
-- Mains power: 0-5000 Watts (aggregate of all appliances)
-```
-
----
-
-### 📁 **File 6: docs/MODEL_TRAINING.md**
-```markdown
+### 📁 **docs/MODEL_TRAINING.md**
 # Model Training Guide
 
 ## Fridge Model Training Parameters
@@ -221,7 +97,7 @@ data = mains.join(fridge, how="inner", lsuffix="_mains", rsuffix="_fridge")
 
 ---
 
-### 📁 **File 7: docs/INFERENCE_GUIDE.md**
+### 📁 **docs/INFERENCE_GUIDE.md**
 ```markdown
 # Model Inference Guide
 
