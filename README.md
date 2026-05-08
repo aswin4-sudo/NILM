@@ -177,7 +177,7 @@ smoothed = pd.Series(predictions).rolling(window=5, median=True).fillna(method='
 
 ---
 
-### 📁 **File 8: docs/EVALUATION_METRICS.md**
+### 📁 ** docs/EVALUATION_METRICS.md**
 ```markdown
 # Evaluation Metrics
 
@@ -230,7 +230,7 @@ def calculate_sae(true_power, predicted_power):
 
 ---
 
-### 📁 **File 9: CHANGELOG.md**
+### 📁 ** CHANGELOG.md**
 ```markdown
 # Changelog
 
@@ -315,7 +315,3 @@ nilm-project/
 
 ``
 
----
-
-
-```
