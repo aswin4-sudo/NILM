@@ -283,7 +283,7 @@ def calculate_sae(true_power, predicted_power):
 
 ---
 
-## 📁 **Recommended GitHub Repository Layout**
+## 📁 **GitHub Repository Layout**
 
 ```
 nilm-project/
@@ -294,11 +294,6 @@ nilm-project/
 ├── LICENSE
 ├── CHANGELOG.md
 │
-├── docs/
-│   ├── DATA_PREPARATION.md
-│   ├── MODEL_TRAINING.md
-│   ├── INFERENCE_GUIDE.md
-│   └── EVALUATION_METRICS.md
 │
 ├── notebooks/
 │   ├── fridge_data_making.ipynb
