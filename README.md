@@ -1,6 +1,5 @@
 # NILM - Non-Intrusive Load Monitoring
 ### 📁 **File 1: README.md**
-```markdown
 # NILM - Non-Intrusive Load Monitoring
 
 Non-Intrusive Load Monitoring (NILM) system using LSTM neural networks to extract appliance power consumption from whole-house mains readings.
